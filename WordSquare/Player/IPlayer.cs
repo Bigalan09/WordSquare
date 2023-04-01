@@ -1,6 +1,6 @@
-﻿using WordSquare.ValueObjects;
+﻿using WordSquare.ValueObject;
 
-namespace WordSquare.Players;
+namespace WordSquare.Player;
 public interface IPlayer
 {
     void EndTurn();

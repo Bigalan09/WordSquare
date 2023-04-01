@@ -1,4 +1,4 @@
-﻿namespace WordSquare.ValueObjects;
+﻿namespace WordSquare.ValueObject;
 public class Coord : ValueObject
 {
     static Coord()
@@ -7,12 +7,6 @@ public class Coord : ValueObject
 
     private Coord()
     {
-    }
-
-    private Coord(int row, int column)
-    {
-        Row = row;
-        Column = column;
     }
 
     public int Row { get; private set; } = 0;
@@ -34,7 +28,7 @@ public class Coord : ValueObject
         return $"({Row}, {Column})";
     }
 
-    protected override IEnumerable<object> GetEqualityComponents()
+    protected IEnumerable<object> GetEqualityComponents()
     {
         throw new NotImplementedException();
     }

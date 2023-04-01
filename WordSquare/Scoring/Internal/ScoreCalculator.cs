@@ -1,5 +1,5 @@
 ﻿using WordSquare.Board;
-using WordSquare.Players;
+using WordSquare.Player;
 
 namespace WordSquare.Scoring.Internal;
 internal class ScoreCalculator : IScoreCalculator

@@ -1,4 +1,4 @@
-﻿namespace WordSquare.Players;
+﻿namespace WordSquare.Player;
 public interface IHumanPlayer : IPlayer
 {
 }

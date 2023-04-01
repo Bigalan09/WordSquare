@@ -1,4 +1,4 @@
-﻿using WordSquare.ValueObjects;
+﻿using WordSquare.ValueObject;
 
 namespace WordSquare.Board;
 public interface IBoard

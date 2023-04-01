@@ -1,4 +1,4 @@
-﻿namespace WordSquare.Internal;
+﻿namespace WordSquare.Game.Internal;
 internal class WordSquare : IWordSquare
 {
 }

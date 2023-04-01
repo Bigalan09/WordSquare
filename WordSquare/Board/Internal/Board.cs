@@ -1,4 +1,6 @@
-﻿namespace WordSquare.Board.Internal;
+﻿using WordSquare.ValueObject;
+
+namespace WordSquare.Board.Internal;
 internal class Board : IBoard
 {
     public char[][] GetBoard()

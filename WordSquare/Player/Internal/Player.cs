@@ -1,4 +1,6 @@
-﻿namespace WordSquare.Players.Internal;
+﻿using WordSquare.ValueObject;
+
+namespace WordSquare.Player.Internal;
 internal abstract class Player : IPlayer
 {
     public void EndTurn()
