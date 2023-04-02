@@ -1,35 +1,48 @@
-﻿using WordSquare.ValueObject;
+﻿using WordSquare.Board;
+using WordSquare.ValueObject;
 
 namespace WordSquare.Player.Internal;
 internal abstract class Player : IPlayer
 {
-    public void EndTurn()
+    private int _currentAction = 0;
+
+    public string Name { get; private init; }
+    public IBoard Board { get; private init; }
+
+    public Player(string name)
     {
-        throw new NotImplementedException();
+        Name = name;
+        Board = new Board.Internal.Board();
     }
 
-    public void FirstAction(Coord coord)
+    public void EndTurn()
     {
-        throw new NotImplementedException();
+        _currentAction = 0;
     }
 
     public bool HasActions()
     {
-        throw new NotImplementedException();
+        return _currentAction < 2;
     }
 
     public bool IsSecondAction()
     {
-        throw new NotImplementedException();
+        return _currentAction == 1;
     }
 
-    public char SecondAction(char letter, Coord coord)
+    public char PlaceLetter(char letter, Coord coord)
     {
-        throw new NotImplementedException();
+        if (Board.IsEmpty(coord))
+        {
+            Board.PlaceLetter(letter, coord);
+            _currentAction++;
+        }
+
+        return letter;
     }
 
     public void SkipAction()
     {
-        throw new NotImplementedException();
+        _currentAction++;
     }
 }
