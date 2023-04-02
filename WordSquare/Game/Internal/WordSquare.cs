@@ -9,36 +9,31 @@ using WordSquare.ValueObject;
 namespace WordSquare.Game.Internal;
 internal class WordSquare : IWordSquare
 {
-    private readonly IPlayer _player1;
-    private readonly IPlayer _player2;
+    private IPlayer _player1 { get; set; } = default!;
+    private IPlayer _player2 { get; set; } = default!;
 
     private readonly IUserInput _userInput;
     private readonly IScoreCalculator _scoreCalculator;
     private readonly IBoardPrinter _boardPrinter;
     private bool _firstMove = true;
-    private IPlayer _currentPlayer;
+    private IPlayer _currentPlayer = default!;
 
     private char _lastLetter = '\0';
 
     public WordSquare(
-        IDawg dawg,
         IUserInput userInput,
         IScoreCalculator scoreCalculator,
-        IBoardPrinter boardPrinter,
-        IPlayer player1,
-        IPlayer player2)
+        IBoardPrinter boardPrinter)
     {
         _userInput = userInput;
         _scoreCalculator = scoreCalculator;
         _boardPrinter = boardPrinter;
-        _player1 = player1;
-        _player2 = player2;
-
-        _currentPlayer = _player1;
     }
 
     public void Begin()
     {
+        if (_player1 == null || _player2 == null) return;
+
         do
         {
             Console.WriteLine($"It's {_currentPlayer.Name}'s Turn: ");
@@ -74,7 +69,7 @@ internal class WordSquare : IWordSquare
                 Coord coords;
                 do
                 {
-                    if (_currentPlayer == _player2)
+                    if (_currentPlayer is IAIPlayer)
                     {
                         coords = ((IAIPlayer)_currentPlayer).GetCoords();
                     }
@@ -89,10 +84,12 @@ internal class WordSquare : IWordSquare
 
             Console.WriteLine($"{_currentPlayer.Name}'s Board: ");
             Console.WriteLine($"{_boardPrinter.Print(_currentPlayer.Board)}");
-
+            Console.WriteLine("----------");
+            Console.WriteLine("Press any key to end your turn!");
+            Console.ReadKey();
+            Console.Clear();
             _currentPlayer.EndTurn();
             _currentPlayer = _currentPlayer == _player1 ? _player2 : _player1;
-            Console.WriteLine("----------");
         } while (!HasGameEnded());
     }
 
@@ -107,5 +104,14 @@ internal class WordSquare : IWordSquare
     public bool HasGameEnded()
     {
         return _player1.Board.IsFull() && _player2.Board.IsFull();
+    }
+
+    public void Initialise(IPlayer player1, IPlayer player2)
+    {
+
+        _player1 = player1;
+        _player2 = player2;
+
+        _currentPlayer = _player1;
     }
 }

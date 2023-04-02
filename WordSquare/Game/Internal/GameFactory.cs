@@ -1,4 +1,5 @@
-﻿using WordSquare.Board;
+﻿using Microsoft.Extensions.DependencyInjection;
+using WordSquare.Board;
 using WordSquare.Dictionary;
 using WordSquare.Input;
 using WordSquare.Player;
@@ -7,27 +8,18 @@ using WordSquare.Scoring;
 namespace WordSquare.Game.Internal;
 internal class GameFactory : IGameFactory
 {
+    private readonly IServiceProvider _serviceProvider;
     private readonly IPlayerFactory _playerFactory;
-    private readonly IDawg _dawg;
-    private readonly IUserInput _userInput;
-    private readonly IScoreCalculator _scoreCalculator;
-    private readonly IBoardPrinter _boardPrinter;
 
     public GameFactory(
-        IPlayerFactory playerFactory,
-        IDawg dawg,
-        IUserInput userInput,
-        IScoreCalculator scoreCalculator,
-        IBoardPrinter boardPrinter)
+        IServiceProvider serviceProvider,
+        IPlayerFactory playerFactory)
     {
+        _serviceProvider = serviceProvider;
         _playerFactory = playerFactory;
-        _dawg = dawg;
-        _userInput = userInput;
-        _scoreCalculator = scoreCalculator;
-        _boardPrinter = boardPrinter;
     }
 
-    public IWordSquare CreateGame(Mode mode)
+    public IWordSquare GetGame(Mode mode)
     {
         IPlayer player1;
         IPlayer player2;
@@ -49,6 +41,8 @@ internal class GameFactory : IGameFactory
                 throw new NotImplementedException();
         }
 
-        return new WordSquare(_dawg, _userInput, _scoreCalculator, _boardPrinter, player1, player2);
+        var game =  _serviceProvider.GetRequiredService<IWordSquare>();
+        game.Initialise(player1, player2);
+        return game;
     }
 }

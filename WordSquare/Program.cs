@@ -23,5 +23,6 @@ static void HostGame(IServiceProvider hostProvider)
     var gameFactory =
         provider.GetRequiredService<IGameFactory>();
 
-    gameFactory.CreateGame(Mode.HumanVsHuman);
+    var game = gameFactory.GetGame(Mode.HumanVsHuman);
+    game.Begin();
 }
