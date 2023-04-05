@@ -1,11 +1,17 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WordSquare.Game;
 
+
+IConfiguration config = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .Build();
+
 using IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices(services =>
+    .ConfigureServices((context, services) =>
     {
-        services.RegisterWordSquare();
+        services.RegisterWordSquare(context.Configuration);
     })
     .Build();
 
@@ -23,6 +29,6 @@ static void HostGame(IServiceProvider hostProvider)
     var gameFactory =
         provider.GetRequiredService<IGameFactory>();
 
-    var game = gameFactory.GetGame(Mode.HumanVsHuman);
+    var game = gameFactory.GetGame(Mode.ComputerVsComputer);
     game.Begin();
 }

@@ -1,19 +1,25 @@
-﻿using WordSquare.ValueObject;
+﻿using WordSquare.AI;
+using WordSquare.ValueObject;
 
 namespace WordSquare.Player.Internal;
 internal class AIPlayer : Player, IAIPlayer
 {
-    public AIPlayer(string name) : base(name)
+    private readonly IBrain _brain;
+
+    public AIPlayer(string name, IBrain brain) : base(name)
     {
+        _brain = brain;
     }
 
     public Coord GetCoords()
     {
-        throw new NotImplementedException();
+        var (_, coord) = _brain.GetBestMove(Board);
+        return coord;
     }
 
     public char GetLetter()
     {
-        throw new NotImplementedException();
+        var (letter, _) = _brain.GetBestMove(Board);
+        return letter;
     }
 }

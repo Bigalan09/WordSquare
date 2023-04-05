@@ -85,9 +85,12 @@ internal class WordSquare : IWordSquare
             Console.WriteLine($"{_currentPlayer.Name}'s Board: ");
             Console.WriteLine($"{_boardPrinter.Print(_currentPlayer.Board)}");
             Console.WriteLine("----------");
-            Console.WriteLine("Press any key to end your turn!");
-            Console.ReadKey();
-            Console.Clear();
+            if (!(_player1 is IAIPlayer && _player2 is IAIPlayer))
+            {
+                Console.WriteLine("Press any key to end your turn!");
+                Console.ReadKey();
+                Console.Clear();
+            }
             _currentPlayer.EndTurn();
             _currentPlayer = _currentPlayer == _player1 ? _player2 : _player1;
         } while (!HasGameEnded());

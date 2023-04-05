@@ -1,16 +1,20 @@
-﻿using Newtonsoft.Json;
-using System.Drawing;
+﻿using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System.Text;
+using WordSquare.File;
+using WordSquare.Options;
 
 namespace WordSquare.Dictionary.Internal;
 internal class Dawg : IDawg
 {
-    private DawgNode _root;
+    private DawgNode _root = default!;
     private HashSet<string> _words = new HashSet<string>();
 
-    public Dawg()
+    public Dawg(
+        IOptions<DawgOption> options,
+        IFileReader fileReader)
     {
-        _root = new DawgNode();
+        FromJson(fileReader.ReadJsonFile(options.Value.Path));
     }
 
     public Dawg(List<string> words)
@@ -33,11 +37,10 @@ internal class Dawg : IDawg
         return current.IsEndOfWord;
     }
 
-    public IDawg FromJson(string json)
+    private void FromJson(string json)
     {
         DawgNode root = JsonConvert.DeserializeObject<DawgNode>(json)!;
         _root = root;
-        return this;
     }
 
     public List<string> GetWordsOfSize(int size)
